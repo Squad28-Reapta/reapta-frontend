@@ -1,0 +1,120 @@
+.app-layout {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background-color: #F5F5F5; /* Fundo cinza claro padrão do Figma */
+}
+
+/* Barra Lateral (Sidebar) */
+.sidebar {
+    width: 260px;
+    background: linear-gradient(180deg, #FF7F2A 0%, #B35900 100%);
+    color: white;
+    display: flex;
+    flex-direction: flex-direction;
+    flex-direction: column;
+    padding: 30px 20px;
+    box-shadow: 4px 0 10px rgba(0, 0, 0, 0.05);
+}
+
+.sidebar-logo {
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.sidebar-logo img {
+    max-width: 80%;
+    height: auto;
+}
+
+.sidebar-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex-grow: 1;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 12px 20px;
+    color: white;
+    text-decoration: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 500;
+    transition: background 0.2s;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    width: 100%;
+}
+
+.menu-item:hover, .menu-item.active {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.sidebar-footer {
+    margin-top: auto;
+}
+
+.btn-logout {
+    background-color: rgba(0, 0, 0, 0.2);
+    color: white;
+    border: none;
+    padding: 10px;
+    width: 100%;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.2s;
+}
+
+.btn-logout:hover {
+    background-color: rgba(217, 83, 79, 0.8); /* Vermelho suave ao passar o mouse */
+}
+
+/* Área de Conteúdo Principal */
+.main-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* Cabeçalho (Header) */
+.header {
+    height: 70px;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.user-welcome {
+    font-size: 18px;
+    color: #333;
+    font-weight: 500;
+}
+
+.system-tag {
+    background-color: #FFA95C;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 15px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+/* Conteúdo da Página Activa */
+.page-container {
+    flex-grow: 1;
+    padding: 40px;
+    overflow-y: auto;
+}
