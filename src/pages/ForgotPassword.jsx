@@ -1,13 +1,29 @@
 import React, { useState } from 'react';
 import '../styles/Login.css';
 import logoImg from '../assets/logo-reapta-fundo-transparente.png';
+import { forgotPassword } from '../services/auth';  
+import { useNavigate } from 'react-router-dom';
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState('');
+  const navigate = useNavigate(); 
 
-  const handleSend = (e) => {
+  const handleSend = async (e) => {
     e.preventDefault();
-    console.log("Enviando código para:", email);
+
+    try {
+      const response = await forgotPassword(email);
+      if (response.success) {
+        alert('Código enviado para seu email!');
+        localStorage.setItem('resetEmail', email);
+        navigate('/verify-code');
+      } else {
+        alert('Erro ao enviar código. Tente novamente.');
+      }
+    } catch (error) {
+      alert('Erro ao enviar código: ' + error.message);
+    }
+
   };
 
   return (

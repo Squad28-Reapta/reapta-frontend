@@ -1,12 +1,19 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../styles/Layout.css';
 import logoImg from '../assets/logo-reapta-fundo-transparente.png';
 
 export default function Layout({ children }) {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    navigate('/login');
+  };
+
   return (
     <div className="app-layout">
       
-      {/* Barra Lateral de Navegação */}
       <aside className="sidebar">
         <div className="sidebar-logo">
           <img src={logoImg} alt="Logo Reapta" />
@@ -21,13 +28,12 @@ export default function Layout({ children }) {
         </nav>
 
         <div className="sidebar-footer">
-          <button className="btn-logout" onClick={() => console.log('Saindo...')}>
+          <button className="btn-logout" onClick={handleLogout}>
             Sair do Sistema
           </button>
         </div>
       </aside>
 
-      {/* Bloco Direito: Cabeçalho + Conteúdo da Tela */}
       <div className="main-content">
         <header className="header">
           <div className="user-welcome">
@@ -38,7 +44,6 @@ export default function Layout({ children }) {
           </div>
         </header>
 
-        {/* Aqui dentro vai renderizar a página específica (ex: Dashboard) */}
         <main className="page-container">
           {children}
         </main>

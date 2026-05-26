@@ -64,7 +64,7 @@ export default function Login() {
           {erro && <p style={{ color: 'red', fontSize: '14px' }}>{erro}</p>}
           
           <div className="forgot-password">
-            <a href="#">Esqueceu a senha?</a>
+            <a href="#" onClick={() => navigate('/Forgot-password')}>Esqueceu a senha?</a>
           </div>
           
           <button type="submit" className="btn-entrar" disabled={carregando}>
