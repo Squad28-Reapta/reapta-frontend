@@ -1,14 +1,33 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../styles/Login.css';
-import logoImg from '../assets/logo-reapta-fundo-transparente.png'; // Ajuste a extensão se não for .png
+import logoImg from '../assets/logo-reapta-fundo-transparente.png';
+import { loginUser } from '../services/auth';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [erro, setErro] = useState('');
+  const [carregando, setCarregando] = useState(false);
+  const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    console.log("Tentando logar com:", email, password);
+    setErro('');
+    setCarregando(true);
+
+    try {
+      const resposta = await loginUser(email, password);
+
+      if (resposta.success) {
+        localStorage.setItem('token', resposta.data.token);
+        navigate('/dashboard');
+      }
+    } catch (err) {
+      setErro(err.message || 'Email ou senha inválidos');
+    } finally {
+      setCarregando(false);
+    }
   };
 
   return (
@@ -41,12 +60,16 @@ export default function Login() {
               required 
             />
           </div>
+
+          {erro && <p style={{ color: 'red', fontSize: '14px' }}>{erro}</p>}
           
           <div className="forgot-password">
             <a href="#">Esqueceu a senha?</a>
           </div>
           
-          <button type="submit" className="btn-entrar">Entrar</button>
+          <button type="submit" className="btn-entrar" disabled={carregando}>
+            {carregando ? 'Entrando...' : 'Entrar'}
+          </button>
         </form>
       </div>
     </main>
