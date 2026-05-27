@@ -1,8 +1,15 @@
 import React from 'react';
 import '../styles/Login.css';
 import logoImg from '../assets/logo-reapta-fundo-transparente.png';
+import { useNavigate } from 'react-router-dom';
 
 export default function ResetSuccess() {
+  const navigate = useNavigate();
+
+  const handleBackToLogin = () => {
+    navigate('/login');
+  };
+
   return (
     <main className="login-container">
       <div className="login-card">
@@ -14,7 +21,7 @@ export default function ResetSuccess() {
           Senha redefinida com sucesso!
         </h2>
         
-        <button className="btn-entrar" style={{ marginTop: '15px' }}>
+        <button className="btn-entrar" style={{ marginTop: '15px' }} onClick={handleBackToLogin}>
           Voltar para o login
         </button>
       </div>

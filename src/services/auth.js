@@ -40,9 +40,9 @@ export const verifyCode = async (email, codigo) => {
     } 
 }
 
-export const resetPassword = async (resetToken, novaSenha) => {
+export const resetPassword = async (resetToken, newPassword) => {
     try {
-        const response = await api('/api/v1/auth/reset-password', 'POST', { resetToken, novaSenha });
+        const response = await api('/api/v1/auth/reset-password', 'POST', { resetToken, newPassword });
         return response;
     } catch (error) {
         console.error('Error resetting password:', error);

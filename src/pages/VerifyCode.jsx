@@ -11,7 +11,7 @@ export default function VerifyCode() {
   const handleVerify = async (e) => {
     e.preventDefault();
     const email = localStorage.getItem('resetEmail');
-    const response = await verifyCode(code);
+    const response = await verifyCode(email, code);
 
     if (response.success) {
       localStorage.setItem('resetToken', response.data.resetToken);

@@ -1,14 +1,37 @@
 import React, { useState } from 'react';
 import '../styles/Login.css';
 import logoImg from '../assets/logo-reapta-fundo-transparente.png';
+import { useNavigate } from 'react-router-dom';
+import { resetPassword } from '../services/auth';
 
 export default function ResetPassword() {
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const navigate = useNavigate();
 
-  const handleReset = (e) => {
+  const handleReset = async (e) => {
     e.preventDefault();
-    console.log("Nova senha definida!");
+
+    if (newPassword !== confirmPassword) {
+      alert('As senhas não coincidem. Tente novamente.');
+      return;
+    }
+
+    const resetToken = localStorage.getItem('resetToken');
+
+    try {
+      const response = await resetPassword(resetToken, newPassword);
+      if (response.success) {
+        localStorage.removeItem('resetToken');
+        localStorage.removeItem('resetEmail');
+        navigate('/reset-success');
+      } else {
+        alert('Erro ao redefinir senha. Tente novamente.');
+      }
+    } catch (error) {
+      alert('Erro ao redefinir senha: ' + error.message);
+    }
+    
   };
 
   return (
