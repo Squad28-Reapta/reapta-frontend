@@ -32,7 +32,7 @@ export const forgotPassword = async (email) => {
 
 export const verifyCode = async (email, codigo) => {
     try {
-        const response = await api('/api/v1/auth/verify-code', 'POST', { email, codigo }); // ← corrigido
+        const response = await api('/api/v1/auth/verify-code', 'POST', { email, codigo }); 
         return response;
     } catch (error) {
         console.error('Error verifying code:', error);
