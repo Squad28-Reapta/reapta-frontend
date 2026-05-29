@@ -24,6 +24,11 @@ function App() {
             <Layout><Dashboard /></Layout>
           </RotaProtegida>
         } />
+        <Route path="/assistant" element={
+          <RotaProtegida>
+            <Layout><IntelligentAssistant /></Layout>
+          </RotaProtegida>
+        } />
       </Routes>
     </BrowserRouter>
   );
