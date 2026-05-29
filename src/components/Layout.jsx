@@ -1,15 +1,18 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import '../styles/Layout.css';
 import logoImg from '../assets/logo-reapta-fundo-transparente.png';
 
 export default function Layout({ children }) {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleLogout = () => {
     localStorage.removeItem('token');
     navigate('/login');
   };
+
+  const isActive = (path) => location.pathname === path;
 
   return (
     <div className="app-layout">
@@ -20,11 +23,42 @@ export default function Layout({ children }) {
         </div>
 
         <nav className="sidebar-menu">
-          <button className="menu-item active">Dashboard</button>
-          <button className="menu-item">Vendas</button>
-          <button className="menu-item">Produtos</button>
-          <button className="menu-item">Usuários</button>
-          <button className="menu-item">Relatórios</button>
+          <button
+            className={`menu-item${isActive('/dashboard') ? ' active' : ''}`}
+            onClick={() => navigate('/dashboard')}
+          >
+            Dashboard
+          </button>
+          <button
+            className={`menu-item${isActive('/vendas') ? ' active' : ''}`}
+            onClick={() => navigate('/vendas')}
+          >
+            Vendas
+          </button>
+          <button
+            className={`menu-item${isActive('/produtos') ? ' active' : ''}`}
+            onClick={() => navigate('/produtos')}
+          >
+            Produtos
+          </button>
+          <button
+            className={`menu-item${isActive('/usuarios') ? ' active' : ''}`}
+            onClick={() => navigate('/usuarios')}
+          >
+            Usuários
+          </button>
+          <button
+            className={`menu-item${isActive('/relatorios') ? ' active' : ''}`}
+            onClick={() => navigate('/relatorios')}
+          >
+            Relatórios
+          </button>
+          <button
+            className={`menu-item${isActive('/assistente') ? ' active' : ''}`}
+            onClick={() => navigate('/assistente')}
+          >
+            Assistente IA
+          </button>
         </nav>
 
         <div className="sidebar-footer">
