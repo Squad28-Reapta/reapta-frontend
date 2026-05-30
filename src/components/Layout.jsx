@@ -30,34 +30,28 @@ export default function Layout({ children }) {
             Dashboard
           </button>
           <button
-            className={`menu-item${isActive('/vendas') ? ' active' : ''}`}
-            onClick={() => navigate('/vendas')}
+            className={`menu-item${isActive('/sales') ? ' active' : ''}`}
+            onClick={() => navigate('/sales')}
           >
             Vendas
           </button>
           <button
-            className={`menu-item${isActive('/produtos') ? ' active' : ''}`}
-            onClick={() => navigate('/produtos')}
+            className={`menu-item${isActive('/products') ? ' active' : ''}`}
+            onClick={() => navigate('/products')}
           >
             Produtos
           </button>
           <button
-            className={`menu-item${isActive('/usuarios') ? ' active' : ''}`}
-            onClick={() => navigate('/usuarios')}
-          >
-            Usuários
-          </button>
-          <button
-            className={`menu-item${isActive('/relatorios') ? ' active' : ''}`}
-            onClick={() => navigate('/relatorios')}
+            className={`menu-item${isActive('/reports') ? ' active' : ''}`}
+            onClick={() => navigate('/reports')}
           >
             Relatórios
           </button>
           <button
-            className={`menu-item${isActive('/assistente') ? ' active' : ''}`}
-            onClick={() => navigate('/assistente')}
+            className={`menu-item${isActive('/assistant') ? ' active' : ''}`}
+            onClick={() => navigate('/assistant')}
           >
-            Assistente IA
+            Assistente
           </button>
         </nav>
 
