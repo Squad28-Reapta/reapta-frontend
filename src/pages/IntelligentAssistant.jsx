@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import '../AssistenteInteligente/.css';
+import '../styles/IntelligentAssistant.css';
 import { api } from '../services/api';
 
 const SUGESTOES_RAPIDAS = [
