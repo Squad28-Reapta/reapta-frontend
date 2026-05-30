@@ -8,6 +8,7 @@ import VerifyCode from './pages/VerifyCode';
 import ResetPassword from './pages/ResetPassword';
 import ResetSuccess from './pages/ResetSuccesss';
 import RotaProtegida from './components/RotaProtegida';
+import IntelligentAssistant from './pages/IntelligentAssistant';
 
 function App() {
   return (
