@@ -19,7 +19,7 @@ export default function Products() {
           <p style={{ margin: '4px 0 0 0', color: '#666', fontSize: '14px' }}>Gerenciamento de estoque e catálogo</p>
         </div>
         <button 
-          onClick={() => navigate('/novas-vendas')}
+          onClick={() => navigate('/new-product')}
           style={{ backgroundColor: '#FF7F2A', color: 'white', border: 'none', padding: '10px 20px', borderRadius: '8px', fontSize: '14px', fontWeight: 'bold', cursor: 'pointer', transition: 'background 0.2s' }}
           onMouseEnter={(e) => e.target.style.backgroundColor = '#B35900'}
           onMouseLeave={(e) => e.target.style.backgroundColor = '#FF7F2A'}
