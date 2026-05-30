@@ -8,6 +8,11 @@ import VerifyCode from './pages/VerifyCode';
 import ResetPassword from './pages/ResetPassword';
 import ResetSuccess from './pages/ResetSuccesss';
 import RotaProtegida from './components/RotaProtegida';
+import Sales from './pages/Sales';
+import NewSales from './pages/NewSales';
+import Products from './pages/Products';
+//import NewProduct from './pages/NewProduct';
+import Relatorios from './pages/Relatorios';
 import IntelligentAssistant from './pages/IntelligentAssistant';
 
 function App() {
@@ -25,6 +30,11 @@ function App() {
             <Layout><Dashboard /></Layout>
           </RotaProtegida>
         } />
+        <Route path="/sales" element={<RotaProtegida><Layout><Sales /></Layout></RotaProtegida>} />
+        <Route path="/new-sale" element={<RotaProtegida><Layout><NewSales /></Layout></RotaProtegida>} />
+        <Route path="/products" element={<RotaProtegida><Layout><Products /></Layout></RotaProtegida>} />
+        {/* <Route path="/new-product" element={<RotaProtegida><Layout><NewProduct /></Layout></RotaProtegida>} /> */}
+        <Route path="/reports" element={<RotaProtegida><Layout><Relatorios /></Layout></RotaProtegida>} />
         <Route path="/assistant" element={
           <RotaProtegida>
             <Layout><IntelligentAssistant /></Layout>
