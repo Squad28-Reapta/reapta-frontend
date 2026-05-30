@@ -31,7 +31,7 @@ export default function NewSales() {
       </div>
 
       <div style={{ backgroundColor: 'white', padding: '30px', borderRadius: '15px', boxShadow: '0 4px 15px rgba(0, 0, 0, 0.05)', border: '1px solid #e5e4e7', maxWidth: '800px' }}>
-        <form onSubmit={(e) => { e.preventDefault(); alert('Venda registrada com sucesso!'); navigate('/vendas'); }}>
+        <form onSubmit={(e) => { e.preventDefault(); alert('Venda registrada com sucesso!'); navigate('/sales'); }}>
           
           {/* Grid Linha 1 */}
           <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '20px', marginBottom: '20px' }}>
@@ -72,7 +72,7 @@ export default function NewSales() {
           <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px' }}>
             <button 
               type="button" 
-              onClick={() => navigate('/vendas')}
+              onClick={() => navigate('/sales')}
               style={{ backgroundColor: '#fff', color: '#666', border: '1px solid #e5e4e7', padding: '10px 20px', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer', fontSize: '14px' }}
             >
               Cancelar
