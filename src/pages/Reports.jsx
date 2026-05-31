@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styles/Relatorios.css';
+import '../styles/Reports.css';
 import '../styles/Dashboard.css';
 import { 
   LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer 
