@@ -20,7 +20,6 @@ export default function AssistenteInteligente() {
   const [input, setInput] = useState('');
   const [carregando, setCarregando] = useState(false);
 
-
   const idRef = useRef(1);
   const fimDaListaRef = useRef(null);
   const inputRef = useRef(null);
@@ -85,7 +84,7 @@ export default function AssistenteInteligente() {
     setMensagens([MENSAGEM_INICIAL]);
   };
 
-  const conversaVazia = mensagens.every((m) => m.origem === 'assistente' && m.id === 0);
+  const conversaVazia = mensagens.length === 1;
 
   return (
     <div className="assistente-container">
@@ -104,34 +103,6 @@ export default function AssistenteInteligente() {
       </div>
 
       <div className="assistente-chat">
-        <p className="assistente-input-label">Sua pergunta</p>
-
-        <div className="assistente-input-area">
-          <textarea
-            ref={inputRef}
-            className="assistente-input"
-            placeholder="Pergunte algo sobre vendas ou produtos..."
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={handleKeyDown}
-            disabled={carregando}
-          />
-          <button
-            className="btn-enviar"
-            onClick={() => enviarPergunta()}
-            disabled={!input.trim() || carregando}
-            title="Enviar pergunta (Enter)"
-          >
-            {carregando ? (
-              <span className="btn-enviando">...</span>
-            ) : (
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
-                <path d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z" />
-              </svg>
-            )}
-          </button>
-        </div>
-
         <div className="chat-lista">
           {mensagens.map((msg) => (
             <div
@@ -179,24 +150,50 @@ export default function AssistenteInteligente() {
             </div>
           )}
 
+          {conversaVazia && !carregando && (
+            <div className="sugestoes-container">
+              <p className="sugestoes-label">Sugestões para começar</p>
+              <div className="sugestoes-lista">
+                {SUGESTOES_RAPIDAS.map((s, i) => (
+                  <button key={i} className="sugestao-chip" onClick={() => enviarPergunta(s.texto)}>
+                    <span className="sugestao-chip-categoria">{s.categoria}</span>
+                    <p className="sugestao-chip-texto">{s.texto}</p>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
           <div ref={fimDaListaRef} />
+        </div>
+
+        <div className="assistente-input-area">
+          <textarea
+            ref={inputRef}
+            className="assistente-input"
+            placeholder="Pergunte algo sobre vendas ou produtos..."
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={handleKeyDown}
+            disabled={carregando}
+          />
+          <button
+            className="btn-enviar"
+            onClick={() => enviarPergunta()}
+            disabled={!input.trim() || carregando}
+            title="Enviar pergunta (Enter)"
+          >
+            {carregando ? (
+              <span className="btn-enviando">...</span>
+            ) : (
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+                <path d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z" />
+              </svg>
+            )}
+          </button>
         </div>
       </div>
 
-      {conversaVazia && !carregando && (
-        <div className="sugestoes-container">
-          <p className="sugestoes-label">Sugestões para começar</p>
-          <div className="sugestoes-lista">
-            {SUGESTOES_RAPIDAS.map((s, i) => (
-              <button key={i} className="sugestao-chip" onClick={() => enviarPergunta(s.texto)}>
-                <span className="sugestao-chip-categoria">{s.categoria}</span>
-                <p className="sugestao-chip-texto">{s.texto}</p>
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
-      
     </div>
   );
 }
