@@ -31,6 +31,17 @@ export default function NewSales() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    if (name === 'produto_id') {
+      const produto = produtos.find((p) => p.id === parseInt(value));
+      setForm((prev) => ({
+        ...prev,
+        produto_id: value,
+        preco_unitario: produto ? produto.preco_atual : ''
+      }));
+      return;
+    }
+
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
