@@ -34,7 +34,7 @@ function App() {
         <Route path="/new-sale" element={<RotaProtegida><Layout><NewSales /></Layout></RotaProtegida>} />
         <Route path="/products" element={<RotaProtegida><Layout><Products /></Layout></RotaProtegida>} />
         {/* <Route path="/new-product" element={<RotaProtegida><Layout><NewProduct /></Layout></RotaProtegida>} /> */}
-        <Route path="/reports" element={<RotaProtegida><Layout><Relatorios /></Layout></RotaProtegida>} />
+        <Route path="/reports" element={<RotaProtegida><Layout><Reports /></Layout></RotaProtegida>} />
         <Route path="/assistant" element={
           <RotaProtegida>
             <Layout><IntelligentAssistant /></Layout>
