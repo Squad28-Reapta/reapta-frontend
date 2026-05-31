@@ -40,7 +40,7 @@ export default function Products() {
             </tr>
           </thead>
           <tbody>
-            {mockProdutos.map((item) => (
+            {mockProducts.map((item) => (
               <tr key={item.codigo} style={{ borderBottom: '1px solid #e5e4e7' }}>
                 <td style={{ padding: '16px', color: '#6b6375', fontWeight: 'bold' }}>{item.codigo}</td>
                 <td style={{ padding: '16px', color: '#08060d', fontWeight: '500' }}>{item.nome}</td>
