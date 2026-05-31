@@ -1,8 +1,24 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { getProducts } from '../services/product';
 
 export default function Products() {
   const navigate = useNavigate();
+
+  const  [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const carregarProdutos = async () => {
+      try {
+        const produtos = await getProducts();
+        setProducts(produtos);
+      } catch (err) {
+        console.error('Erro ao carregar produtos:', err);
+      }
+    };
+    carregarProdutos();
+  }, []);
 
   const mockProducts = [
     { codigo: 'PROD-01', nome: 'Dispositivo IoT Reapta Node', categoria: 'Hardware', preco: 'R$ 890,00', estoque: 34 },
@@ -40,14 +56,14 @@ export default function Products() {
             </tr>
           </thead>
           <tbody>
-            {mockProducts.map((item) => (
+            {products.map((item) => (
               <tr key={item.codigo} style={{ borderBottom: '1px solid #e5e4e7' }}>
-                <td style={{ padding: '16px', color: '#6b6375', fontWeight: 'bold' }}>{item.codigo}</td>
+                <td style={{ padding: '16px', color: '#6b6375', fontWeight: 'bold' }}>{item.sku}</td>
                 <td style={{ padding: '16px', color: '#08060d', fontWeight: '500' }}>{item.nome}</td>
                 <td style={{ padding: '16px', color: '#6b6375' }}>{item.categoria}</td>
-                <td style={{ padding: '16px', color: '#08060d' }}>{item.preco}</td>
+                <td style={{ padding: '16px', color: '#08060d' }}>{item.preco_atual}</td>
                 <td style={{ padding: '16px', color: item.estoque < 10 ? '#d9534f' : '#28a745', fontWeight: 'bold' }}>
-                  {item.estoque} un
+                  {item.estoque_atual} un
                 </td>
               </tr>
             ))}
