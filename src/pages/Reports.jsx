@@ -4,8 +4,10 @@ import '../styles/Dashboard.css';
 import { 
   LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer 
 } from 'recharts';
+import { useNavigate } from 'react-router-dom';
 
 export default function Relatorios() {
+  const navigate = useNavigate();
   // Dados do Sales.jsx — Histórico Comercial
   const dadosSales = [
     { name: 'Semana 1', total: 12000 },
@@ -25,12 +27,18 @@ export default function Relatorios() {
     { dia: '28', vendas: 78 },
   ];
 
+  const handleAssistenteClick = () => {
+    navigate('/assistant');
+  }
+
   return (
     <div className="relatorios-container">
       {/* Cabeçalho com o botão do Assistente */}
       <div className="relatorios-header">
         <h2 className="relatorios-title">Relatórios</h2>
-        <button className="btn-assistente">Falar com Assistente Inteligente</button>
+        <button className="btn-assistente" onClick={handleAssistenteClick}>
+          Falar com Assistente Inteligente
+        </button>
       </div>
 
       {/* Gráfico Principal */}
