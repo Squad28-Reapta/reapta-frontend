@@ -12,7 +12,7 @@ import Sales from './pages/Sales';
 import NewSales from './pages/NewSales';
 import Products from './pages/Products';
 //import NewProduct from './pages/NewProduct';
-import Relatorios from './pages/Relatorios';
+import Reports from './pages/Reports';
 import IntelligentAssistant from './pages/IntelligentAssistant';
 
 function App() {
