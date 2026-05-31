@@ -1,0 +1,201 @@
+.vendas-container {
+    padding: 28px 32px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+.vendas-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.vendas-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0;
+}
+
+.vendas-btn-nova {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background-color: #FF7F2A;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+}
+
+.vendas-btn-nova:hover {
+    background-color: #e56e1f;
+    transform: translateY(-1px);
+}
+
+.vendas-btn-nova:active {
+    transform: translateY(0);
+}
+
+.vendas-toolbar {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.vendas-search-wrapper {
+    position: relative;
+    flex: 1;
+    min-width: 200px;
+}
+
+.vendas-search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    color: #aaa;
+    pointer-events: none;
+}
+
+.vendas-search {
+    width: 100%;
+    padding: 10px 12px 10px 36px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 14px;
+    background: #fff;
+    color: #333;
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+}
+
+.vendas-search:focus {
+    outline: none;
+    border-color: #FF7F2A;
+}
+
+.vendas-select {
+    padding: 10px 14px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 14px;
+    background: #fff;
+    color: #333;
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+.vendas-select:focus {
+    outline: none;
+    border-color: #FF7F2A;
+}
+
+.vendas-erro {
+    background: #fff3f3;
+    border: 1px solid #f5c2c2;
+    border-radius: 8px;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+    color: #c0392b;
+    font-size: 14px;
+}
+
+.vendas-erro button {
+    background: #c0392b;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-size: 13px;
+    cursor: pointer;
+}
+.vendas-estado-vazio {
+    text-align: center;
+    padding: 60px 20px;
+    color: #aaa;
+    font-size: 15px;
+}
+
+.vendas-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.venda-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #fff;
+    border: 1px solid #ececec;
+    border-radius: 10px;
+    padding: 14px 18px;
+    flex-wrap: wrap;
+    transition: box-shadow 0.2s;
+}
+
+.venda-row:hover {
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+}
+
+.venda-id {
+    font-size: 13px;
+    font-weight: 700;
+    color: #555;
+    white-space: nowrap;
+}
+
+.venda-separador {
+    width: 1px;
+    height: 18px;
+    background: #ddd;
+    flex-shrink: 0;
+}
+
+.venda-campo {
+    font-size: 13px;
+    color: #555;
+    white-space: nowrap;
+}
+
+.venda-valor {
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+.venda-status {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+    margin-left: auto;
+}
+
+.status-pendente {
+    background: #fff3e0;
+    color: #e65100;
+}
+
+.status-concluida {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.status-cancelada {
+    background: #fce4ec;
+    color: #c62828;
+}
