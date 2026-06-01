@@ -21,6 +21,7 @@ export default function Login() {
 
       if (resposta.success) {
         localStorage.setItem('token', resposta.data.token);
+        localStorage.setItem('nome', resposta.data.usuario.nome)
         navigate('/dashboard');
       }
     } catch (err) {

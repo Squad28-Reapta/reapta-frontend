@@ -6,9 +6,11 @@ import logoImg from '../assets/logo-reapta-fundo-transparente.png';
 export default function Layout({ children }) {
   const navigate = useNavigate();
   const location = useLocation();
+  const nome = localStorage.getItem('nome');
 
   const handleLogout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('nome');
     navigate('/login');
   };
 
@@ -65,7 +67,7 @@ export default function Layout({ children }) {
       <div className="main-content">
         <header className="header">
           <div className="user-welcome">
-            Olá, <strong>Usuário</strong>
+            Olá, <strong>{nome}</strong>
           </div>
           <div className="system-tag">
             Painel Administrativo
