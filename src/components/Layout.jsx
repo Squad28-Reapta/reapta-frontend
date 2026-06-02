@@ -1,12 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import '../styles/Layout.css';
 import logoImg from '../assets/logo-reapta-fundo-transparente.png';
+
+const MENU = [
+  { path: '/dashboard', label: 'Dashboard' },
+  { path: '/sales',     label: 'Vendas' },
+  { path: '/products',  label: 'Produtos' },
+  { path: '/reports',   label: 'Relatórios' },
+  { path: '/assistant', label: 'Assistente' },
+];
 
 export default function Layout({ children }) {
   const navigate = useNavigate();
   const location = useLocation();
   const nome = localStorage.getItem('nome');
+  const [sidebarAberta, setSidebarAberta] = useState(false);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -14,47 +23,40 @@ export default function Layout({ children }) {
     navigate('/login');
   };
 
+  const navegar = (path) => {
+    navigate(path);
+    setSidebarAberta(false);
+  };
+
   const isActive = (path) => location.pathname === path;
 
   return (
     <div className="app-layout">
-      
-      <aside className="sidebar">
+
+      {/* Overlay mobile */}
+      {sidebarAberta && (
+        <div
+          className="sidebar-overlay"
+          onClick={() => setSidebarAberta(false)}
+          aria-hidden="true"
+        />
+      )}
+
+      <aside className={`sidebar${sidebarAberta ? ' sidebar--aberta' : ''}`}>
         <div className="sidebar-logo">
           <img src={logoImg} alt="Logo Reapta" />
         </div>
 
         <nav className="sidebar-menu">
-          <button
-            className={`menu-item${isActive('/dashboard') ? ' active' : ''}`}
-            onClick={() => navigate('/dashboard')}
-          >
-            Dashboard
-          </button>
-          <button
-            className={`menu-item${isActive('/sales') ? ' active' : ''}`}
-            onClick={() => navigate('/sales')}
-          >
-            Vendas
-          </button>
-          <button
-            className={`menu-item${isActive('/products') ? ' active' : ''}`}
-            onClick={() => navigate('/products')}
-          >
-            Produtos
-          </button>
-          <button
-            className={`menu-item${isActive('/reports') ? ' active' : ''}`}
-            onClick={() => navigate('/reports')}
-          >
-            Relatórios
-          </button>
-          <button
-            className={`menu-item${isActive('/assistant') ? ' active' : ''}`}
-            onClick={() => navigate('/assistant')}
-          >
-            Assistente
-          </button>
+          {MENU.map(({ path, label }) => (
+            <button
+              key={path}
+              className={`menu-item${isActive(path) ? ' active' : ''}`}
+              onClick={() => navegar(path)}
+            >
+              {label}
+            </button>
+          ))}
         </nav>
 
         <div className="sidebar-footer">
@@ -66,12 +68,19 @@ export default function Layout({ children }) {
 
       <div className="main-content">
         <header className="header">
-          <div className="user-welcome">
-            Olá, <strong>{nome}</strong>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <button
+              className="hamburger"
+              onClick={() => setSidebarAberta((v) => !v)}
+              aria-label="Abrir menu"
+            >
+              <span /><span /><span />
+            </button>
+            <div className="user-welcome">
+              Olá, <strong>{nome}</strong>
+            </div>
           </div>
-          <div className="system-tag">
-            Painel Administrativo
-          </div>
+          <div className="system-tag">Painel Administrativo</div>
         </header>
 
         <main className="page-container">

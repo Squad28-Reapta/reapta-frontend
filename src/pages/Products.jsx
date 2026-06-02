@@ -1,75 +1,148 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import '../styles/Products.css';
 import { getProducts } from '../services/product';
+import ModalNovoProduto from '../components/ModalNovoProduto';
+
+function formatarPreco(v) {
+  if (v == null) return '—';
+  return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(v);
+}
 
 export default function Products() {
-  const navigate = useNavigate();
+  const [products, setProducts] = useState([]);
+  const [carregando, setCarregando] = useState(true);
+  const [erro, setErro] = useState('');
+  const [busca, setBusca] = useState('');
+  const [modalAberto, setModalAberto] = useState(false);
+  const [produtoEditando, setProdutoEditando] = useState(null);
 
-  const  [products, setProducts] = useState([]);
-
-  useEffect(() => {
-    const carregarProdutos = async () => {
-      try {
-        const produtos = await getProducts();
-        setProducts(produtos);
-      } catch (err) {
-        console.error('Erro ao carregar produtos:', err);
-      }
-    };
-    carregarProdutos();
+  const carregarProdutos = useCallback(async () => {
+    setCarregando(true);
+    setErro('');
+    try {
+      const dados = await getProducts();
+      setProducts(dados ?? []);
+    } catch {
+      setErro('Não foi possível carregar os produtos.');
+    } finally {
+      setCarregando(false);
+    }
   }, []);
 
-  const mockProducts = [
-    { codigo: 'PROD-01', nome: 'Dispositivo IoT Reapta Node', categoria: 'Hardware', preco: 'R$ 890,00', estoque: 34 },
-    { codigo: 'PROD-02', nome: 'Módulo de Sensor de Presença', categoria: 'Componentes', preco: 'R$ 145,00', estoque: 112 },
-    { codigo: 'PROD-03', nome: 'Licença Anual Reapta Dash', categoria: 'Software', preco: 'R$ 1.590,00', estoque: 999 },
-    { codigo: 'PROD-04', nome: 'Gateway de Comunicação LoRaWAN', categoria: 'Redes', preco: 'R$ 2.400,00', estoque: 8 },
-  ];
+  useEffect(() => { carregarProdutos(); }, [carregarProdutos]);
+
+  const produtosFiltrados = products.filter((p) => {
+    if (!busca) return true;
+    const q = busca.toLowerCase();
+    return (
+      (p.nome ?? '').toLowerCase().includes(q) ||
+      (p.sku ?? '').toLowerCase().includes(q) ||
+      (p.categoria ?? '').toLowerCase().includes(q)
+    );
+  });
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '25px' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <div>
-          <h2 style={{ color: '#333', fontSize: '24px', fontWeight: 'bold', margin: 0 }}>Produtos</h2>
-          <p style={{ margin: '4px 0 0 0', color: '#666', fontSize: '14px' }}>Gerenciamento de estoque e catálogo</p>
+    <>
+      <div className="produtos-container">
+        <div className="produtos-header">
+          <div>
+            <h2 className="produtos-title">Produtos</h2>
+            <p className="produtos-subtitle">Gerenciamento de estoque e catálogo</p>
+          </div>
+          <button
+            className="produtos-btn-novo"
+            onClick={() => setModalAberto(true)}
+          >
+            + Novo Produto
+          </button>
         </div>
-        <button 
-          onClick={() => navigate('/new-product')}
-          style={{ backgroundColor: '#FF7F2A', color: 'white', border: 'none', padding: '10px 20px', borderRadius: '8px', fontSize: '14px', fontWeight: 'bold', cursor: 'pointer', transition: 'background 0.2s' }}
-          onMouseEnter={(e) => e.target.style.backgroundColor = '#B35900'}
-          onMouseLeave={(e) => e.target.style.backgroundColor = '#FF7F2A'}
-        >
-          + Novo Produto
-        </button>
+
+        <div className="produtos-toolbar">
+          <div className="produtos-search-wrapper">
+            <svg className="produtos-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <circle cx="11" cy="11" r="8" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+            <input
+              type="text"
+              className="produtos-search"
+              placeholder="Buscar por nome, SKU ou categoria..."
+              value={busca}
+              onChange={(e) => setBusca(e.target.value)}
+            />
+          </div>
+        </div>
+
+        {erro && (
+          <div className="produtos-erro">
+            <p>{erro}</p>
+            <button onClick={carregarProdutos}>Tentar novamente</button>
+          </div>
+        )}
+
+        {carregando ? (
+          <div className="produtos-vazio"><p>Carregando...</p></div>
+        ) : !erro && produtosFiltrados.length === 0 ? (
+          <div className="produtos-vazio">
+            <p>{busca ? 'Nenhum produto corresponde à busca.' : 'Nenhum produto cadastrado.'}</p>
+          </div>
+        ) : (
+          <div className="produtos-table-wrapper">
+            <table className="produtos-table">
+              <thead>
+                <tr>
+                  <th>CÓDIGO</th>
+                  <th>NOME DO PRODUTO</th>
+                  <th>CATEGORIA</th>
+                  <th>PREÇO UNITÁRIO</th>
+                  <th>DISPONÍVEL</th>
+                  <th>AÇÕES</th>
+                </tr>
+              </thead>
+              <tbody>
+                {produtosFiltrados.map((item) => (
+                  <tr key={item.id}>
+                    <td className="td-sku">{item.sku}</td>
+                    <td className="td-nome">{item.nome}</td>
+                    <td className="td-cat">{item.categoria ?? '—'}</td>
+                    <td className="td-preco">{formatarPreco(item.preco_atual)}</td>
+                    <td className={`td-estoque ${item.estoque_atual <= item.estoque_minimo ? 'estoque-baixo' : 'estoque-ok'}`}>
+                      {item.estoque_atual ?? 0} un
+                      {item.estoque_atual <= item.estoque_minimo && (
+                        <span className="badge-estoque-baixo">Baixo</span>
+                      )}
+                    </td>
+                    <td className="td-acoes">
+                      <button
+                        className="btn-editar-produto"
+                        onClick={() => setProdutoEditando(item)}
+                        title="Editar produto"
+                      >
+                        Editar
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
 
-      <div style={{ backgroundColor: 'white', borderRadius: '15px', boxShadow: '0 4px 15px rgba(0, 0, 0, 0.05)', overflow: 'hidden', border: '1px solid #e5e4e7' }}>
-        <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '15px' }}>
-          <thead>
-            <tr style={{ backgroundColor: '#f4f3ec', borderBottom: '1px solid #e5e4e7' }}>
-              <th style={{ padding: '16px', color: '#08060d', fontWeight: '600' }}>CÓDIGO</th>
-              <th style={{ padding: '16px', color: '#08060d', fontWeight: '600' }}>NOME DO PRODUTO</th>
-              <th style={{ padding: '16px', color: '#08060d', fontWeight: '600' }}>CATEGORIA</th>
-              <th style={{ padding: '16px', color: '#08060d', fontWeight: '600' }}>PREÇO UNITÁRIO</th>
-              <th style={{ padding: '16px', color: '#08060d', fontWeight: '600' }}>DISPONÍVEL</th>
-            </tr>
-          </thead>
-          <tbody>
-            {products.map((item) => (
-              <tr key={item.codigo} style={{ borderBottom: '1px solid #e5e4e7' }}>
-                <td style={{ padding: '16px', color: '#6b6375', fontWeight: 'bold' }}>{item.sku}</td>
-                <td style={{ padding: '16px', color: '#08060d', fontWeight: '500' }}>{item.nome}</td>
-                <td style={{ padding: '16px', color: '#6b6375' }}>{item.categoria}</td>
-                <td style={{ padding: '16px', color: '#08060d' }}>{item.preco_atual}</td>
-                <td style={{ padding: '16px', color: item.estoque < 10 ? '#d9534f' : '#28a745', fontWeight: 'bold' }}>
-                  {item.estoque_atual} un
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
+      {modalAberto && (
+        <ModalNovoProduto
+          onClose={() => setModalAberto(false)}
+          onSucesso={carregarProdutos}
+        />
+      )}
+
+      {produtoEditando && (
+        <ModalNovoProduto
+          produto={produtoEditando}
+          onClose={() => setProdutoEditando(null)}
+          onSucesso={carregarProdutos}
+        />
+      )}
+    </>
   );
 }

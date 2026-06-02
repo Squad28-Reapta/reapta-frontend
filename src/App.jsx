@@ -6,7 +6,7 @@ import Dashboard from './pages/Dashboard';
 import ForgotPassword from './pages/ForgotPassword';
 import VerifyCode from './pages/VerifyCode';
 import ResetPassword from './pages/ResetPassword';
-import ResetSuccess from './pages/ResetSuccesss';
+import ResetSuccess from './pages/ResetSuccess';
 import RotaProtegida from './components/RotaProtegida';
 import Sales from './pages/Sales';
 import NewSales from './pages/NewSales';

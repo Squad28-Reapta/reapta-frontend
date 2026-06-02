@@ -19,6 +19,24 @@ export default function Dashboard() {
     <div className="dashboard-container">
       <h2 className="dashboard-title">Dashboard</h2>
 
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: 10,
+        background: '#fff8f0',
+        border: '1px solid #ffd9b3',
+        borderRadius: 10,
+        padding: '10px 16px',
+        fontSize: 13,
+        color: '#7a4000',
+      }}>
+        <span style={{ fontSize: 16 }}>⚠️</span>
+        <span>
+          Os dados exibidos neste painel são <strong>apenas para demonstração visual</strong> e não refletem informações reais do banco de dados.
+          Para métricas reais, acesse a tela de <strong>Relatórios</strong>.
+        </span>
+      </div>
+
       {/* Cards Superiores */}
       <div className="summary-cards">
         <div className="card">
@@ -41,7 +59,7 @@ export default function Dashboard() {
       <div className="chart-container">
         <h3 className="chart-title">Receita Mensal</h3>
         
-        <ResponsiveContainer width="100%" height="100%">
+        <ResponsiveContainer width="100%" height={280}>
           <LineChart data={mockData}>
             <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#eee" />
             <XAxis dataKey="mes" stroke="#888" />

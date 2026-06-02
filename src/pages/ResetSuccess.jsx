@@ -16,11 +16,11 @@ export default function ResetSuccess() {
         <div className="logo-container">
           <img src={logoImg} alt="Logo Reapta" className="logo-image" />
         </div>
-        
+
         <h2 className="welcome-text" style={{ fontSize: '20px' }}>
           Senha redefinida com sucesso!
         </h2>
-        
+
         <button className="btn-entrar" style={{ marginTop: '15px' }} onClick={handleBackToLogin}>
           Voltar para o login
         </button>
