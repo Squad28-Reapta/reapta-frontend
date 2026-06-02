@@ -46,6 +46,16 @@ export default function ModalDetalheVenda({ vendaId, onClose }) {
     return () => { cancelado = true; };
   }, [vendaId]);
 
+  const atualizarStatus = async (novoStatus) => {
+    try {
+      await api(`/api/v1/vendas/${vendaId}`, 'PUT', { status: novoStatus });
+      const res = await api(`/api/v1/vendas/${vendaId}`, 'GET');
+      setVenda(res.data);
+    } catch {
+      setErro('Não foi possível atualizar o status.');
+    }
+  };
+
   return (
     <Modal titulo={`Venda #${String(vendaId).padStart(6, '0')}`} onClose={onClose} largura="640px">
       {carregando && (
@@ -56,7 +66,6 @@ export default function ModalDetalheVenda({ vendaId, onClose }) {
 
       {venda && (
         <>
-          {/* Status badge */}
           <div style={{ marginBottom: 20 }}>
             <span style={{
               display: 'inline-block',
@@ -71,7 +80,6 @@ export default function ModalDetalheVenda({ vendaId, onClose }) {
             </span>
           </div>
 
-          {/* Dados da venda */}
           <p className="modal-secao-titulo">Dados da Venda</p>
           <InfoRow label="Data" value={data(venda.data_venda)} />
           <InfoRow label="Vendedor" value={venda.vendedor_nome ?? '—'} />
@@ -82,7 +90,6 @@ export default function ModalDetalheVenda({ vendaId, onClose }) {
 
           <hr className="modal-divider" />
 
-          {/* Itens da venda */}
           <p className="modal-secao-titulo" style={{ marginTop: 8 }}>
             Itens ({venda.itens?.length ?? 0})
           </p>
@@ -122,7 +129,17 @@ export default function ModalDetalheVenda({ vendaId, onClose }) {
             </div>
           ))}
 
-          <div style={{ marginTop: 16, display: 'flex', justifyContent: 'flex-end' }}>
+          <div style={{ marginTop: 16, display: 'flex', justifyContent: 'flex-end', gap: 10 }}>
+            {venda.status === 'pendente' && (
+              <>
+                <button className="modal-btn-cancelar" onClick={() => atualizarStatus('cancelada')}>
+                  Cancelar Venda
+                </button>
+                <button className="modal-btn-salvar" onClick={() => atualizarStatus('concluida')}>
+                  Finalizar Venda
+                </button>
+              </>
+            )}
             <button className="modal-btn-cancelar" onClick={onClose}>Fechar</button>
           </div>
         </>
