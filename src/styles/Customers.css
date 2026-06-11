@@ -1,0 +1,109 @@
+.customers-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    height: 100%;
+}
+
+.customers-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.customers-header h2 {
+    color: #333;
+    font-size: 24px;
+    margin: 0;
+}
+
+.customers-actions {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.search-input {
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    outline: none;
+    width: 250px;
+    font-size: 14px;
+}
+
+.search-input:focus {
+    border-color: #FFA95C;
+}
+
+.btn-add-customer {
+    background-color: #FFA95C;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-add-customer:hover {
+    background-color: #FF7F2A;
+}
+
+.customers-table-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    flex-grow: 1;
+    overflow-x: auto;
+}
+
+.customers-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.customers-table th, .customers-table td {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.customers-table th {
+    color: #666;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.customers-table td {
+    color: #333;
+    font-size: 14px;
+}
+
+.status-badge {
+    background-color: #e6f4ea;
+    color: #1e8e3e;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.btn-edit {
+    color: #FFA95C;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.btn-edit:hover {
+    color: #B35900;
+}

@@ -14,6 +14,7 @@ import Products from './pages/Products';
 //import NewProduct from './pages/NewProduct';
 import Reports from './pages/Reports';
 import IntelligentAssistant from './pages/IntelligentAssistant';
+import Customers from './pages/Customers';
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
         <Route path="/new-sale" element={<RotaProtegida><Layout><NewSales /></Layout></RotaProtegida>} />
         <Route path="/products" element={<RotaProtegida><Layout><Products /></Layout></RotaProtegida>} />
         {/* <Route path="/new-product" element={<RotaProtegida><Layout><NewProduct /></Layout></RotaProtegida>} /> */}
+        <Route path="/customers" element={<RotaProtegida><Layout><Customers /></Layout></RotaProtegida>} />
         <Route path="/reports" element={<RotaProtegida><Layout><Reports /></Layout></RotaProtegida>} />
         <Route path="/assistant" element={
           <RotaProtegida>
