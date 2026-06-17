@@ -47,15 +47,15 @@ export default function AssistenteInteligente() {
     setCarregando(true);
 
     try {
-      const resposta = await api('/api/v1/ia/consulta', 'POST', {
-        pergunta: textoPergunta,
+      const resposta = await api('/api/v1/ai/chat', 'POST', { 
+        message: textoPergunta, // 
       });
 
       const novaMensagemIA = {
         id: idRef.current++,
         origem: 'assistente',
-        texto: resposta.data?.resposta || 'Não consegui encontrar uma resposta para isso.',
-        dados: resposta.data?.dados || null,
+        texto: resposta.resposta || 'Não consegui encontrar uma resposta para isso.',
+        dados: null,
         timestamp: new Date(),
       };
       setMensagens((prev) => [...prev, novaMensagemIA]);
