@@ -88,6 +88,40 @@ export default function ModalDetalheVenda({ vendaId, onClose }) {
           <InfoRow label="Desconto geral" value={moeda(venda.desconto_total)} />
           <InfoRow label="Valor total" value={moeda(venda.valor_total)} />
 
+          {/* ─── Cliente ─── */}
+          {venda.cliente_nome && (
+            <>
+              <hr className="modal-divider" />
+              <p className="modal-secao-titulo" style={{ marginTop: 8 }}>Cliente</p>
+              <div style={{
+                background: '#f9f9f9',
+                border: '1px solid #ececec',
+                borderRadius: 10,
+                padding: '14px 16px',
+                marginBottom: 4,
+              }}>
+                <p style={{ margin: 0, fontWeight: 700, fontSize: 14, color: '#1a1a1a' }}>
+                  {venda.cliente_nome}
+                </p>
+                {venda.cliente_cpf_cnpj && (
+                  <p style={{ margin: '4px 0 0', fontSize: 13, color: '#555' }}>
+                    CPF/CNPJ: {venda.cliente_cpf_cnpj}
+                  </p>
+                )}
+                {venda.cliente_email && (
+                  <p style={{ margin: '2px 0 0', fontSize: 13, color: '#555' }}>
+                    E-mail: {venda.cliente_email}
+                  </p>
+                )}
+                {venda.cliente_telefone && (
+                  <p style={{ margin: '2px 0 0', fontSize: 13, color: '#555' }}>
+                    Telefone: {venda.cliente_telefone}
+                  </p>
+                )}
+              </div>
+            </>
+          )}
+
           <hr className="modal-divider" />
 
           <p className="modal-secao-titulo" style={{ marginTop: 8 }}>

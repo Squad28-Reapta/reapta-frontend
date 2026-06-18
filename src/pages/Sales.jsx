@@ -56,7 +56,8 @@ export default function Sales() {
     const matchBusca =
       busca === '' ||
       idStr.includes(busca.replace('#', '')) ||
-      (v.status ?? '').toLowerCase().includes(busca.toLowerCase());
+      (v.status ?? '').toLowerCase().includes(busca.toLowerCase()) ||
+      (v.cliente_nome ?? '').toLowerCase().includes(busca.toLowerCase());
     const matchStatus = filtroStatus === '' || v.status === filtroStatus;
     return matchBusca && matchStatus;
   });
@@ -83,7 +84,7 @@ export default function Sales() {
             <input
               type="text"
               className="vendas-search"
-              placeholder="Buscar por ID ou status..."
+              placeholder="Buscar por ID, cliente ou status..."
               value={busca}
               onChange={(e) => setBusca(e.target.value)}
             />
@@ -118,6 +119,10 @@ export default function Sales() {
                 <span className="venda-id">#{String(venda.id).padStart(6, '0')}</span>
                 <div className="venda-separador" />
                 <span className="venda-campo">Data: {formatarData(venda.data_venda)}</span>
+                <div className="venda-separador" />
+                <span className="venda-campo" style={{ maxWidth: 160, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  {venda.cliente_nome ?? <span style={{ color: '#bbb', fontStyle: 'italic' }}>Sem cliente</span>}
+                </span>
                 <div className="venda-separador" />
                 <span className="venda-campo">
                   {venda.quantidade_itens != null ? `${venda.quantidade_itens} iten(s)` : '—'}

@@ -17,6 +17,7 @@ const ITEM_VAZIO = { produto_id: '', quantidade: 1, preco_unitario: '', desconto
 
 export default function ModalNovaVenda({ onClose, onSucesso }) {
   const [produtos, setProdutos] = useState([]);
+  const [clientes, setClientes] = useState([]);
   const [itens, setItens] = useState([]);
   const [itemAtual, setItemAtual] = useState({ ...ITEM_VAZIO });
   const [estado, setEstado] = useState('');
@@ -25,17 +26,53 @@ export default function ModalNovaVenda({ onClose, onSucesso }) {
   const [carregando, setCarregando] = useState(false);
   const [erro, setErro] = useState('');
 
+  // cliente
+  const [buscaCliente, setBuscaCliente] = useState('');
+  const [clienteId, setClienteId] = useState('');
+  const [clienteSelecionado, setClienteSelecionado] = useState(null);
+  const [buscandoCliente, setBuscandoCliente] = useState(false);
+
   useEffect(() => {
     api('/api/v1/produtos', 'GET')
       .then((res) => setProdutos(res.data ?? []))
       .catch(() => setProdutos([]));
   }, []);
 
+  // Busca clientes com debounce
+  useEffect(() => {
+    if (!buscaCliente.trim()) {
+      setClientes([]);
+      return;
+    }
+    setBuscandoCliente(true);
+    const timer = setTimeout(() => {
+      api(`/api/v1/clientes?busca=${encodeURIComponent(buscaCliente)}`, 'GET')
+        .then((res) => setClientes(res.data ?? []))
+        .catch(() => setClientes([]))
+        .finally(() => setBuscandoCliente(false));
+    }, 350);
+    return () => clearTimeout(timer);
+  }, [buscaCliente]);
+
+  const selecionarCliente = (cliente) => {
+    setClienteId(cliente.id);
+    setClienteSelecionado(cliente);
+    setBuscaCliente('');
+    setClientes([]);
+  };
+
+  const removerCliente = () => {
+    setClienteId('');
+    setClienteSelecionado(null);
+    setBuscaCliente('');
+    setClientes([]);
+  };
+
   const handleItemChange = (e) => {
     const { name, value } = e.target;
 
     if (name === 'produto_id') {
-      const p = produtos.find((x) => x.id === parseInt(value));
+      const p = produtos.find((x) => String(x.id) === String(value));
       setItemAtual((prev) => ({
         ...prev,
         produto_id: value,
@@ -53,11 +90,11 @@ export default function ModalNovaVenda({ onClose, onSucesso }) {
       return;
     }
 
-    const produto = produtos.find((p) => p.id === parseInt(itemAtual.produto_id));
+    const produto = produtos.find((p) => String(p.id) === String(itemAtual.produto_id));
     setItens((prev) => [
       ...prev,
       {
-        produto_id: parseInt(itemAtual.produto_id),
+        produto_id: itemAtual.produto_id,
         produto_nome: produto?.nome ?? '',
         produto_sku: produto?.sku ?? '',
         quantidade: parseInt(itemAtual.quantidade),
@@ -90,6 +127,7 @@ export default function ModalNovaVenda({ onClose, onSucesso }) {
     setCarregando(true);
     try {
       await api('/api/v1/vendas', 'POST', {
+        cliente_id: clienteId || null,
         estado: estado || null,
         cidade: cidade || null,
         desconto_total: parseFloat(descontoTotal || 0),
@@ -113,6 +151,95 @@ export default function ModalNovaVenda({ onClose, onSucesso }) {
     <Modal titulo="Nova Venda" onClose={onClose} largura="680px">
       <form onSubmit={handleSubmit}>
         {erro && <div className="modal-erro">{erro}</div>}
+
+        {/* ─── Cliente ─── */}
+        <p className="modal-secao-titulo">Cliente</p>
+
+        {clienteSelecionado ? (
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            background: '#f0faf0',
+            border: '1px solid #c3e6cb',
+            borderRadius: 8,
+            padding: '10px 14px',
+            marginBottom: 16,
+          }}>
+            <div>
+              <p style={{ margin: 0, fontWeight: 700, fontSize: 13, color: '#1a1a1a' }}>
+                {clienteSelecionado.nome}
+              </p>
+              <p style={{ margin: '2px 0 0', fontSize: 12, color: '#666' }}>
+                {clienteSelecionado.cpf_cnpj}
+                {clienteSelecionado.email ? ` · ${clienteSelecionado.email}` : ''}
+                {clienteSelecionado.telefone ? ` · ${clienteSelecionado.telefone}` : ''}
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={removerCliente}
+              style={{ background: 'none', border: 'none', color: '#c0392b', cursor: 'pointer', fontSize: 18, lineHeight: 1 }}
+              aria-label="Remover cliente"
+            >
+              ×
+            </button>
+          </div>
+        ) : (
+          <div className="modal-field" style={{ position: 'relative', marginBottom: 16 }}>
+            <label className="modal-label">Buscar por nome ou CPF/CNPJ</label>
+            <input
+              className="modal-input"
+              type="text"
+              placeholder="Digite para buscar..."
+              value={buscaCliente}
+              onChange={(e) => setBuscaCliente(e.target.value)}
+            />
+            {buscandoCliente && (
+              <p style={{ fontSize: 12, color: '#888', margin: '4px 0 0' }}>Buscando...</p>
+            )}
+            {clientes.length > 0 && (
+              <div style={{
+                position: 'absolute',
+                top: '100%',
+                left: 0,
+                right: 0,
+                background: '#fff',
+                border: '1px solid #e0e0e0',
+                borderRadius: 8,
+                boxShadow: '0 4px 16px rgba(0,0,0,0.10)',
+                zIndex: 100,
+                maxHeight: 200,
+                overflowY: 'auto',
+              }}>
+                {clientes.map((c) => (
+                  <div
+                    key={c.id}
+                    onClick={() => selecionarCliente(c)}
+                    style={{
+                      padding: '10px 14px',
+                      cursor: 'pointer',
+                      borderBottom: '1px solid #f5f5f5',
+                      transition: 'background 0.15s',
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.background = '#f9f9f9'}
+                    onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                  >
+                    <p style={{ margin: 0, fontWeight: 600, fontSize: 13, color: '#1a1a1a' }}>{c.nome}</p>
+                    <p style={{ margin: '2px 0 0', fontSize: 12, color: '#888' }}>
+                      {c.cpf_cnpj}{c.email ? ` · ${c.email}` : ''}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            )}
+            {!buscandoCliente && buscaCliente.trim().length > 1 && clientes.length === 0 && (
+              <p style={{ fontSize: 12, color: '#aaa', margin: '4px 0 0' }}>Nenhum cliente encontrado.</p>
+            )}
+          </div>
+        )}
+
+        <hr className="modal-divider" />
 
         {/* ─── Adicionar item ─── */}
         <p className="modal-secao-titulo">Adicionar Item</p>
